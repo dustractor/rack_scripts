@@ -4,9 +4,17 @@ import tkinter.filedialog as filedialog
 import pathlib
 import os
 import json
+import sys
+
 
 sentinel_samples_folder_unset = "--choose samples folder--"
-rack_presets_dir = pathlib.Path.home() / "AppData" / "Local" / "Rack2" / "presets"
+if sys.platform == "win32":
+    rack_presets_dir = pathlib.Path.home() / "AppData" / "Local" / "Rack2" / "presets"
+elif sys.platform.startswith("linux"):
+    rack_presets_dir = pathlib.Path.home() / ".local" / "share" / "Rack2" / "presets"
+elif sys.platform == "darwin":
+    rack_presets_dir = pathlib.Path.home() / "Library" / "Application Support" / "Rack2" / "presets"
+
 voxglitch_wavbank_presets_dir = rack_presets_dir / "voxglitch" / "wavbank"
 
 voxglitch_wavbank_json = {
