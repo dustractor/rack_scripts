@@ -12,6 +12,7 @@ ns = args.parse_args()
 if not ns.path:
     print("no paths supplied. exiting.")
     exit()
+
 paths = list(set(ns.path))
 
 rack_user_presets = pathlib.Path(ns.rack_user_presets)
@@ -39,12 +40,9 @@ voxglitch_wavbank_json = {
         "trig_input_response_mode": 0
     }}
 
-# }}}1
-
 rack_vg_output = ns.rack_user_presets / "voxglitch" / "wavbank"
 
 subpaths = list()
-
 
 for path in paths:
     for r,ds,fs in os.walk(path):
