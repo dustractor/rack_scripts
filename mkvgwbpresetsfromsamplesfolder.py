@@ -1,9 +1,11 @@
+# mkvgwbpresetsfromsamplesfolder.py
+# make voxglitch wavbank presets from samples folder
+
 import argparse
 import json
 import pathlib
 import sys
 import copy
-import re
 home = pathlib.Path.home()
 
 # {{{1 get rack dir
@@ -18,11 +20,12 @@ if rack_dir == "unknownplatform":
     exit()
 # }}}1
 
+# edit the following line or use the --samples-dir argument to choose the folder where you keep your wav samples
 _DEFAULT_SAMPLES_DIR = pathlib.Path("d:\\zSamples")
 
 args = argparse.ArgumentParser()
 args.add_argument("--samples-dir",type=pathlib.Path,default=_DEFAULT_SAMPLES_DIR)
-args.add_argument("--min-wavs",type=int,default=24)
+args.add_argument("--min-wavs",type=int,default=24) # the --min-wavs argument ignores folder with less than a certain number of samples
 ns = args.parse_args()
 
 # {{{1 json_template
@@ -51,9 +54,7 @@ json_template = {
 }
 # }}}1
 
-
 presetsdir = rack_dir / "presets" / "voxglitch" / "wavbank"
-
 
 target = presetsdir / ns.samples_dir.name
 
@@ -71,9 +72,11 @@ for rpath,t in subdirs:
     jd = copy.deepcopy(json_template)
     jd["data"]["path"] = str(rpath)
     t.parent.mkdir(parents=True,exist_ok=True)
+    if not t.exists():
+        print("creating",t)
     with open(t,"w",encoding="utf-8") as f:
         s = json.dumps(jd,indent=True)
         f.write(s)
     
-
+print("OK")
 
