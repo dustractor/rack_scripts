@@ -25,7 +25,7 @@ _DEFAULT_SAMPLES_DIR = pathlib.Path("d:\\zSamples")
 
 args = argparse.ArgumentParser()
 args.add_argument("--samples-dir",type=pathlib.Path,default=_DEFAULT_SAMPLES_DIR)
-args.add_argument("--min-wavs",type=int,default=24) # the --min-wavs argument ignores folder with less than a certain number of samples
+# args.add_argument("--min-wavs",type=int,default=10) # the --min-wavs argument ignores folder with less than a certain number of samples
 ns = args.parse_args()
 
 # {{{1 json_template
@@ -62,7 +62,8 @@ subdirs = []
 
 for rpath,dirlist,filelist in ns.samples_dir.walk():
     wavcount = len([_ for _ in filelist if _.lower().endswith(".wav")])
-    if wavcount > ns.min_wavs:
+    # if wavcount > ns.min_wavs:
+    if (wavcount > 0):
         newname = "{} [{}].vcvm".format(rpath.name,wavcount)
         parts = rpath.relative_to(ns.samples_dir).parts
         newpath = target.joinpath(*parts)/newname
